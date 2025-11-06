@@ -10,6 +10,7 @@ def main():
       bot = create_bot()
       bot.run(token)
     except Exception as e:
+       print("Abra o log para mais detalhes.")
        log(f"Erro ao iniciar o bot: {e}")
 
 if __name__ == "__main__":

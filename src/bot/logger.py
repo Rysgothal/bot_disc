@@ -1,18 +1,31 @@
 import os
 from datetime import datetime
+from discord.ext import commands
 
-def log(mensagem, padding=0):
-  pasta_logs = "Logs"
+def get_author_name(ctx: commands.Context):
+  if ctx and hasattr(ctx, "author") and ctx.author:
+    return ctx.author.name
+  
+  return "System"
 
-  if not os.path.exists(pasta_logs):
-    os.makedirs(pasta_logs)
+def get_guild_name(ctx: commands.Context):
+  if ctx and hasattr(ctx, "guild") and ctx.guild:
+    return ctx.guild.name
   
-  data_atual = datetime.now().strftime("%d-%m-%Y")
-  nome_arquivo = f"{data_atual}.log"
-  caminho_arquivo = os.path.join(pasta_logs, nome_arquivo)
+  return "System"
+
+def log(message, ctx: commands.Context=None, padding=0):
+  dir_default = "Logs"
+  if not os.path.exists(dir_default):
+    os.makedirs(dir_default)
   
+  filename = f"{get_guild_name(ctx)}.log"
+  
+  dir_file = os.path.join(dir_default, filename)
   timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-  mensagem_completa = f"[{timestamp}]:{'  ' * padding} {mensagem}\n"
+
+  log_message = f"[{timestamp}] ({get_author_name(ctx)}) "
+  log_message += " " * (padding * 2) + message
   
-  with open(caminho_arquivo, "a", encoding="utf-8") as arquivo:
-    arquivo.write(mensagem_completa)
+  with open(dir_file, "a", encoding="utf-8") as arquivo:
+    arquivo.write(log_message + "\n")
