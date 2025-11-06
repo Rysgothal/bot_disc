@@ -1,9 +1,16 @@
-from load_env_variables import get_env_variable
-import model.bot as bot_module
+from bot.core import create_bot
+from bot.utils import get_env_variable
+from bot.logger import log
 
 def main():
-  bot = bot_module.Bot(token=get_env_variable("DISCORD_TOKEN"))
-  bot.run()
+    log("Iniciando o bot...", 0)
+    token = get_env_variable("DISCORD_TOKEN")
 
-if __name__ == '__main__':
-  main()
+    try:
+      bot = create_bot()
+      bot.run(token)
+    except Exception as e:
+       log(f"Erro ao iniciar o bot: {e}")
+
+if __name__ == "__main__":
+    main()
