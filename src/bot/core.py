@@ -14,6 +14,7 @@ def create_bot():
 
     logger.log("Adicionando comandos personalizados...", 1)
     bot.add_command(custom_commands.ola)
+    bot.add_command(custom_commands.ping)
     logger.log("Comandos personalizados adicionados.", 1)
 
     return bot
